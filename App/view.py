@@ -54,8 +54,11 @@ def printReq1(lista,sample):
         print(' Fecha Trending: ' + video['trending_date'] + "," + ' Nombre: ' +
                 video['title'] + ","+ ' Canal: ' + video['channel_title'] + ","+ " Fecha de Publicacion: "+ video["publish_time"] +
                 "," + " Visitas: " + video["views"]+ ","+ " Likes: "+ video["likes"]+ "," + " Dislikes: " +video["dislikes"])
-
-
+def printReq3(info):
+    video=info[0]
+    days=str(info[1])
+    print("El video con mas tendencia es: ")
+    print("Nombre: " + video["title"] + "," + "Canal: " + video["channel_title"] + ","+ "Categoria_ID: " + video["category_id"] + ","+ "Dias: " + days)
 """
 Menu principal
 """
@@ -76,6 +79,9 @@ while True:
             printReq1(controller.sameCountryCategory(catalog["country"],catalog["category-id"],country,category),sample)
         except IndexError:
             print("No hay tantos videos de este pais y categoria, estos son todos los que hay")
+    elif int(inputs[0])==4:
+        category=input("Ingrese la categoria que quiere buscar: ")
+        printReq3(controller.mostTrending(catalog,category))
 
     else:
         sys.exit(0)

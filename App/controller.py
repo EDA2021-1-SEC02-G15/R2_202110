@@ -38,16 +38,18 @@ def initCatalog():
 # Funciones para la carga de datos
 
 def loadData(catalog):
-    loadVideos(catalog)
     loadCategoria(catalog)
+    loadVideos(catalog)
+    
 
 
 def loadVideos(catalog):
-    videosfile = cf.data_dir + "videos-large.csv"
+    videosfile = cf.data_dir + "videos-small.csv"
     input_file = csv.DictReader(open(videosfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
         model.addCountry(catalog,video)
+        model.addVideoToCategoria(catalog,video)
 
 
 def loadCategoria(catalog):
@@ -62,5 +64,6 @@ def loadCategoria(catalog):
 
 def sameCountryCategory(catalogo_pais,catalogo_categoria,country,category):
     return model.sameCountryCategory(catalogo_pais,catalogo_categoria,country,category)
-
+def mostTrending(catalogo,categoria):
+    return model.mostTrending(catalogo,categoria)
 # Funciones de consulta sobre el catálogo

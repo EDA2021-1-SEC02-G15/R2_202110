@@ -49,7 +49,7 @@ def newCatalog():
     catalog["videos-id"]=mp.newMap(10,
                                     maptype="CHAINING",
                                     loadfactor=4.0)
-    catalog["categorias"]=mp.newMap(10,
+    catalog["categorias"]=mp.newMap(32,
                                     maptype="PROBING",
                                     loadfactor=0.5)
     catalog["category-id"]=mp.newMap(37,
@@ -86,16 +86,28 @@ def addCountry(catalog,video):
         lt.addLast(videos["value"],video)
         mp.put(catalog["country"],country,videos["value"])
 
-        
+def addVideoToCategoria(catalog,video):
+    entry=mp.get(catalog["category-id"],video["category_id"])
+    if entry:
+        lista=entry["value"]["videos"]
+        lt.addLast(lista,video)
+        entry["value"]["videos"]=lista
+
+
+
+    
+
 
 
 # Funciones para creacion de datos
 
 def newCategoria(name,id):
     categoria={"name":"",
-                "id":""}
+                "id":"",
+                "videos":None}
     categoria["name"]=name
     categoria["id"]=id
+    categoria["videos"]=lt.newList(datastructure="ARRAY_LIST")
     return categoria
 
 
@@ -122,7 +134,27 @@ def sameCountryCategory(catalogo_pais,catalogo_categoria,country,category):
     sorted_vids=sortVideosViews(final_vids)
     return sorted_vids
 
-    def mostTrending(sorted_list):
+def mostTrending(catalogo,categoria):
+    entry=mp.get(catalogo["categorias"],categoria)
+    sorted_list=sortVideosName(entry["videos"])
+    most=0
+    most_vid=None
+    for i in range(1,lt.size(sorted_list)+1):
+        current_vid=lt.getElement(sorted_list,i)
+        if current_vid==lt.lastElement(sorted_list):
+            next_vid=lt.getElement(sorted_list,i-1)
+        else:
+            next_vid=lt.getElement(sorted_list,i+1)
+        if str(current_vid["title"])==str(next_vid["title"]):
+            current+=1
+        else:
+            current=1
+        if current>most:
+            most=current
+            most_vid=current_vid
+        
+    return (most_vid,most)
+    
 
 
 
