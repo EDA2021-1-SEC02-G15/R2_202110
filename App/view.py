@@ -82,6 +82,13 @@ while True:
     elif int(inputs[0])==4:
         category=input("Ingrese la categoria que quiere buscar: ")
         printReq3(controller.mostTrending(catalog,category))
+    
+    elif int(inputs[0] == 3):
+        country = input("Digite el país en el cual está interesado:" )
+        rta1 = controller.sortVideoId(catalog,country)
+        rta2 = controller.encontrar_ganador(rta1)
+
+        print("El video más trending en: ", country, " es: ", rta2[0], " con: ", rta2[1]," días en trending.")
 
     else:
         sys.exit(0)

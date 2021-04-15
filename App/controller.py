@@ -66,4 +66,13 @@ def sameCountryCategory(catalogo_pais,catalogo_categoria,country,category):
     return model.sameCountryCategory(catalogo_pais,catalogo_categoria,country,category)
 def mostTrending(catalogo,categoria):
     return model.mostTrending(catalogo,categoria)
+
+def obtener_listapais(catalog, country):
+    return model.obtener_listapais(catalog, country)
+
+def sortVideoId(catalog, country):
+    return model.sortVideoId(catalog, country)
+
+def encontrar_ganador(lista_ids):
+    return model.encontrar_ganador(lista_ids)
 # Funciones de consulta sobre el catálogo

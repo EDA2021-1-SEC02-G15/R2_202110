@@ -32,6 +32,7 @@ from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
 from DISClib.Algorithms.Sorting import quicksort as qcks
+from DISClib.Algorithms.Sorting import mergesort as mgs
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
@@ -46,7 +47,7 @@ def newCatalog():
              "category-id": None,
              "country": None}
     catalog["videos"]=lt.newList(datastructure="ARRAY_LIST")
-    catalog["videos-id"]=mp.newMap(10,
+    catalog["videos-id"]=mp.newMap(10000,
                                     maptype="CHAINING",
                                     loadfactor=4.0)
     catalog["categorias"]=mp.newMap(32,
@@ -157,6 +158,42 @@ def mostTrending(catalogo,categoria):
     
 
 
+def obtener_listapais(catalog, country):
+    vid = mp.get(catalog['country'], country)
+    return me.getValue(vid)["value"]
+
+def sortVideoId(catalog, country):
+    videos_ordenados = obtener_listapais(catalog, country)
+    lista_id = mgs.sort(videos_ordenados, comparacion_ids)
+    return lista_id
+
+def encontrar_ganador(lista_ids):
+    counter = 0 
+    video_mas_trending = 0
+    cant_act = 0
+    ganador = ""
+    nombre_video= "" 
+    for video in lt.iterator(lista_ids):
+
+        if video['video_id'] != nombre_video:
+            nombre_video = video['video_id']
+            cant_act= 0
+            video_mas_trending += 1 
+        if video_mas_trending > cant_act:
+            cant_act = video_mas_trending
+            ganador = counter
+        counter += 1
+    
+    video_ganador = lt.getElement(lista_ids, ganador)
+    return video_ganador, cant_act
+
+
+
+
+
+def comparacion_ids(id1, id2):
+    return id1['video_id'] > id2['video_id']
+
 
 
 
@@ -177,5 +214,4 @@ def sortVideosViews(lista):
 def sortVideosName(lista):
     sorted_list=qcks.sort(lista,cmpVideosbyName)
     return sorted_list
-
 
